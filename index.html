@@ -15,8 +15,8 @@
     async function sendQuestion() {
       const question = document.getElementById('question').value;
       try {
-      //const response = await fetch('https://us-central1-prueba-pria.cloudfunctions.net/priluxBot', {
-      const response = await fetch('http://localhost:8080', {
+      const response = await fetch('https://us-central1-prueba-pria.cloudfunctions.net/priluxBot', {
+      //const response = await fetch('http://localhost:8080', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ question }),
