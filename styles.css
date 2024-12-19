@@ -30,29 +30,25 @@ body {
   background: #002b5c;
   color: #fff;
   padding: 1rem;
-  text-align: center;
-  position: relative; /* Esto asegura que los elementos posicionados dentro se ajusten a este contenedor */
-  display: flex;
-  align-items: center; /* Centra los elementos verticalmente */
-  justify-content: center; /* Centra el texto horizontalmente */
+  display: grid; /* Usamos Grid para la estructura */
+  grid-template-columns: auto 1fr; /* Primera columna para el logo, segunda para los textos */
+  gap: 1rem; /* Espaciado entre las columnas */
+  align-items: center; /* Centrar verticalmente los elementos */
 }
 
 .chat-header img {
-  position: absolute; /* Permite posicionarlo libremente dentro del contenedor */
-  left: 1rem; /* Lo coloca a la izquierda del contenedor */
-  height: 40px; /* Tamaño del logo */
+  height: 50px; /* Tamaño del logo */
 }
 
 .chat-header h1 {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   margin: 0;
-  padding-left: 3rem; /* Espacio para que el texto no se superponga con el logo */
 }
 
 .chat-header p {
-  font-size: 1rem;
+  font-size: 0.9rem;
   margin: 0;
-  padding-top: 0.5rem; /* Espaciado entre el título y la descripción */
+  margin-top: 0.3rem; /* Espaciado entre el título y el párrafo */
 }
 
 .chat-messages {
