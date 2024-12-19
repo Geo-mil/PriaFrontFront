@@ -2,30 +2,65 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PrIA</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Asistente Técnico de Prilux</h1>
-  <textarea id="question" placeholder="Escribe tu consulta aquí"></textarea><br />
-  <button onclick="sendQuestion()">Enviar</button>
-  <h2>Respuesta:</h2>
-  <p id="answer"></p>
+  <div class="chat-container">
+    <div class="chat-header">
+      <h1>Asistente Técnico de Prilux</h1>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input-container">
+      <textarea id="question" placeholder="Escribe tu consulta aquí"></textarea>
+      <button onclick="sendQuestion()">Enviar</button>
+    </div>
+  </div>
 
   <script>
     async function sendQuestion() {
       const question = document.getElementById('question').value;
+
+      // Evitar enviar mensajes vacíos
+      if (!question.trim()) return;
+
+      // Agregar pregunta al área de mensajes
+      const chatMessages = document.getElementById('chatMessages');
+      const userMessage = document.createElement('div');
+      userMessage.className = 'message user-message';
+      userMessage.innerText = question;
+      chatMessages.appendChild(userMessage);
+      chatMessages.scrollTop = chatMessages.scrollHeight; // Hacer scroll al final
+
+      // Enviar pregunta al backend
       try {
-      const response = await fetch('https://us-central1-prueba-pria.cloudfunctions.net/priluxBot', {
-      //const response = await fetch('http://localhost:8080', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question }),
-      });
-      const data = await response.json();
-      document.getElementById('answer').innerText = data.answer;
-      } catch(e) {
-        console.log(e)
+        const response = await fetch('https://us-central1-prueba-pria.cloudfunctions.net/priluxBot', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question }),
+        });
+
+        const data = await response.json();
+
+        // Mostrar respuesta en el área de mensajes
+        const botMessage = document.createElement('div');
+        botMessage.className = 'message bot-message';
+        botMessage.innerText = data.answer;
+        chatMessages.appendChild(botMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Hacer scroll al final
+
+      } catch (e) {
+        console.log(e);
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'message error-message';
+        errorMessage.innerText = 'Error al obtener la respuesta. Intenta nuevamente.';
+        chatMessages.appendChild(errorMessage);
+        chatMessages.scrollTop = chatMessages.scrollHeight; // Hacer scroll al final
       }
+
+      // Limpiar el área de texto
+      document.getElementById('question').value = '';
     }
   </script>
 </body>
