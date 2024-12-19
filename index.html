@@ -10,11 +10,15 @@
   <div class="chat-container">
     <div class="chat-header">
       <h1>Asistente Técnico de Prilux</h1>
+      <p>Consulta información sobre luminarias Avatar, Arisa o Versa</p>
     </div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input-container">
       <textarea id="question" placeholder="Escribe tu consulta aquí"></textarea>
-      <button onclick="sendQuestion()">Enviar</button>
+      <button id="sendButton" onclick="sendQuestion()">Enviar</button>
+    </div>
+    <div class="spinner" id="spinner" style="display: none;">
+      Procesando...
     </div>
   </div>
 
@@ -32,6 +36,14 @@
       userMessage.innerText = question;
       chatMessages.appendChild(userMessage);
       chatMessages.scrollTop = chatMessages.scrollHeight; // Hacer scroll al final
+
+      // Mostrar el spinner
+      const spinner = document.getElementById('spinner');
+      spinner.style.display = 'block';
+
+      // Deshabilitar botón mientras se procesa
+      const sendButton = document.getElementById('sendButton');
+      sendButton.disabled = true;
 
       // Enviar pregunta al backend
       try {
@@ -54,9 +66,13 @@
         console.log(e);
         const errorMessage = document.createElement('div');
         errorMessage.className = 'message error-message';
-        errorMessage.innerText = 'Error al obtener la respuesta. Intenta nuevamente.';
+        errorMessage.innerText = 'Error al obtener la respuesta. Intentalo nuevamente.';
         chatMessages.appendChild(errorMessage);
         chatMessages.scrollTop = chatMessages.scrollHeight; // Hacer scroll al final
+      } finally {
+        // Ocultar el spinner
+        spinner.style.display = 'none';
+        sendButton.disabled = false; // Habilitar botón
       }
 
       // Limpiar el área de texto
